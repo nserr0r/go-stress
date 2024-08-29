@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # If you prefer the allow list template instead of the deny list, see community template:
 # https://github.com/github/gitignore/blob/main/community/Golang/Go.AllowList.gitignore
 #
@@ -23,3 +24,58 @@ go.work.sum
 
 # env file
 .env
+=======
+go-stress
+
+/vendor/
+/*.exe
+/*.exe~
+/*.dll
+/*.so
+/*.dylib
+*.test
+*.out
+__debug*
+
+*.env
+*.config
+*.secret
+config.yaml
+config.json
+
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+.DS_Store
+Thumbs.db
+
+*.log
+*.trace
+*.prof
+*.pprof
+
+/bin/
+/build/
+/dist/
+/release/
+*.o
+*.a
+
+gen/
+*.pb.go
+*.pb.gw.go
+*.swagger.json
+
+*.cover
+coverage.out
+
+/go.sum
+/go.mod
+
+Dockerfile
+.dockerignore
+
+/go/pkg/
+>>>>>>> 65b2d45 (	new file:   .gitignore)
