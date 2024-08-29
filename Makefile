@@ -14,6 +14,8 @@ all: build
 .PHONY: build
 build:
 	@echo "$(YELLOW)Building the project...$(RESET)"
+	@go mod init main
+	@go tiny
 	@go build -ldflags="$(LDFLAGS)" -o $(BINARY_NAME) $(SRC)
 	@echo "$(GREEN)Build complete!$(RESET)"
 
