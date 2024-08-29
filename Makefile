@@ -42,6 +42,11 @@ run: build
 	@echo "$(YELLOW)Running the project...$(RESET)"
 	@./$(BINARY_NAME) -host=localhost:3001 -path=/crypt/ws -conn=10 -msg=5
 
+.PHONY: run-ssl
+run-ssl: build
+	@echo "$(YELLOW)Running the project with SSL...$(RESET)"
+	@./$(BINARY_NAME) -host=localhost:3001 -path=/crypt/ws -conn=10 -msg=5 -ssl=true
+
 .PHONY: install
 install: build
 	@echo "$(YELLOW)Installing to $(INSTALL_DIR)...$(RESET)"

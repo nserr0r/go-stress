@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/tls"
 	"fmt"
 	"sync/atomic"
 	"time"
@@ -25,7 +26,12 @@ func NewWebSocketManager(config Config, logger Logger, proxyManager *ProxyManage
 }
 
 func (m *WebSocketManager) ManageConnection(connID int) {
-	url := fmt.Sprintf("ws://%s%s", m.config.Host, m.config.Path)
+	scheme := "ws"
+	if m.config.UseSSL {
+		scheme = "wss"
+	}
+
+	url := fmt.Sprintf("%s://%s%s", scheme, m.config.Host, m.config.Path)
 
 	for {
 		var dialer *websocket.Dialer
@@ -42,6 +48,13 @@ func (m *WebSocketManager) ManageConnection(connID int) {
 			}
 		} else {
 			dialer = websocket.DefaultDialer
+		}
+
+		// Add TLS configuration if using SSL
+		if m.config.UseSSL {
+			dialer.TLSClientConfig = &tls.Config{
+				InsecureSkipVerify: m.config.InsecureSkipVerify, // Опция для отключения проверки сертификата
+			}
 		}
 
 		conn, _, err := dialer.Dial(url, nil)
@@ -121,4 +134,3 @@ func (m *WebSocketManager) generateOrUseMessage(connID int) string {
 	}
 	return fmt.Sprintf("Hello from connection %d", connID)
 }
-
