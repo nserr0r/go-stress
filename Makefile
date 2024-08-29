@@ -9,13 +9,24 @@ GREEN := $(shell tput setaf 2)
 RESET := $(shell tput sgr0)
 
 .PHONY: all
-all: build
+all: tidy build
+
+.PHONY: init
+init:
+	@echo "$(YELLOW)Initializing Go module...$(RESET)"
+	@go mod init || true
+	@go mod tidy
+	@echo "$(GREEN)Go module initialized and dependencies tidied!$(RESET)"
+
+.PHONY: tidy
+tidy:
+	@echo "$(YELLOW)Tidying dependencies...$(RESET)"
+	@go mod tidy
+	@echo "$(GREEN)Dependencies tidied!$(RESET)"
 
 .PHONY: build
 build:
 	@echo "$(YELLOW)Building the project...$(RESET)"
-	@go mod init main
-	@go tidy
 	@go build -ldflags="$(LDFLAGS)" -o $(BINARY_NAME) $(SRC)
 	@echo "$(GREEN)Build complete!$(RESET)"
 
@@ -23,6 +34,7 @@ build:
 clean:
 	@echo "$(YELLOW)Cleaning up...$(RESET)"
 	@rm -f $(BINARY_NAME)
+	@rm -rf ./bin
 	@echo "$(GREEN)Cleanup complete!$(RESET)"
 
 .PHONY: run
@@ -40,7 +52,7 @@ install: build
 test:
 	@echo "$(YELLOW)Running tests...$(RESET)"
 	@go test ./...
-	@echo "$(GREEN)Tests complete!$(RESET)" 
+	@echo "$(GREEN)Tests complete!$(RESET)"
 
 .PHONY: coverage
 coverage:
