@@ -14,14 +14,14 @@ all: tidy build
 .PHONY: init
 init:
 	@echo "$(YELLOW)Initializing Go module...$(RESET)"
-	@go mod init || true
+	@go mod init main || true
 	@go mod tidy
 	@echo "$(GREEN)Go module initialized and dependencies tidied!$(RESET)"
 
 .PHONY: tidy
 tidy:
 	@echo "$(YELLOW)Tidying dependencies...$(RESET)"
-	@go mod init || true
+	@go mod init main || true
 	@go mod tidy
 	@echo "$(GREEN)Dependencies tidied!$(RESET)"
 
