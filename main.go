@@ -1,63 +1,63 @@
 package main
 
 import (
-	"fmt"
 	"sync"
 	"time"
+
+	"main/config"
+	"main/connection"
+	"main/logger"
+	"main/proxy"
+	"main/status"
 )
 
 func main() {
-	config := LoadConfig()
-	logger := NewConsoleLogger(config.Log)
+	cfg := config.LoadConfig()
+	log := logger.NewConsoleLogger(cfg.Log)
 
-	var proxyManager *ProxyManager
-	if config.ProxyFile != "" {
-		proxyManager = NewProxyManager(config, logger)
+	var proxyManager *proxy.ProxyManager
+	var dialerFactory *proxy.DialerFactory
+
+	if cfg.ProxyFile != "" {
+		proxyManager = proxy.NewProxyManager(cfg.ProxyFile)
+		dialerFactory = proxy.NewDialerFactory(cfg, log)
+		dialerFactory.ProxyManager = proxyManager
+	} else {
+		dialerFactory = proxy.NewDialerFactory(cfg, log)
 	}
 
-	connectionManager := NewWebSocketManager(config, logger, proxyManager)
+	var connectionManager connection.ConnectionManager
+	if cfg.UseWebSocket {
+		connectionManager = connection.NewWebSocketManager(cfg, log, dialerFactory)
+	} else {
+		connectionManager = connection.NewHTTPManager(cfg, log, dialerFactory)
+	}
+
+	if !cfg.Log {
+		activeConnections := connectionManager.GetActiveConnections()
+		completedConnections := connectionManager.GetCompletedConnections()
+
+		var statusManager *status.StatusManager
+		if proxyManager != nil {
+			statusManager = status.NewStatusManager(&activeConnections, &completedConnections, cfg.Connections, proxyManager)
+		} else {
+			statusManager = status.NewStatusManager(&activeConnections, &completedConnections, cfg.Connections, nil)
+		}
+		go statusManager.DisplayStatus()
+	}
 
 	var wg sync.WaitGroup
-
-	if !config.Log {
-		go displayStatus(connectionManager, proxyManager)
-	}
-
-	for i := 0; i < config.Connections; i++ {
+	for i := 0; i < cfg.Connections; i++ {
 		wg.Add(1)
 		go func(connID int) {
 			defer wg.Done()
-			connectionManager.ManageConnection(connID)
+			connectionManager.ManageConnection(connID, cfg.Body)
 		}(i)
 
-		time.Sleep(time.Duration(config.ConnDelayMs) * time.Millisecond)
+		time.Sleep(time.Duration(cfg.ConnDelayMs) * time.Millisecond)
 	}
 
 	wg.Wait()
 	select {}
 }
 
-const (
-	colorRed        = "\033[31m"
-	colorGreen      = "\033[32m"
-	colorYellow     = "\033[33m"
-	colorLightGreen = "\033[92m"
-	colorReset      = "\033[0m"
-)
-
-func displayStatus(manager ConnectionManager, proxyManager *ProxyManager) {
-	for {
-		active, completed := manager.Status()
-		maxConnectionsDigits := len(fmt.Sprintf("%d", manager.MaxConnections()))
-		statusString := fmt.Sprintf("\r%sActive Connections: %s%0*d %s| Completed Connections: %s%0*d%s",
-			colorYellow, colorRed, maxConnectionsDigits, active, colorYellow, colorGreen, maxConnectionsDigits, completed, colorReset)
-
-		if proxyManager != nil {
-			proxyStatus := proxyManager.getProxyStatusString()
-			statusString += proxyStatus
-		}
-
-		fmt.Print(statusString)
-		time.Sleep(40 * time.Millisecond)
-	}
-}

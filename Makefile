@@ -40,12 +40,12 @@ clean:
 .PHONY: run
 run: build
 	@echo "$(YELLOW)Running the project...$(RESET)"
-	@./$(BINARY_NAME) -host=localhost:3001 -path=/crypt/ws -conn=10 -msg=5
+	@./$(BINARY_NAME) -host=localhost:3001 -path=/crypt/ws -conn=10 -ws=true
 
 .PHONY: run-ssl
 run-ssl: build
 	@echo "$(YELLOW)Running the project with SSL...$(RESET)"
-	@./$(BINARY_NAME) -host=localhost:3001 -path=/crypt/ws -conn=10 -msg=5 -ssl=true
+	@./$(BINARY_NAME) -host=localhost:3001 -path=/crypt/ws -conn=10 -ws=true -ssl=true
 
 .PHONY: install
 install: build
