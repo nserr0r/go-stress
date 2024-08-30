@@ -13,28 +13,23 @@ Go-Stress — это мощный и гибкий инструмент для с
     Реальное время: Отслеживайте активные и завершенные соединения в реальном времени с цветовой индикацией в консоли.
 
 Установка
+
 Предварительные требования
 
     Установленный Go 1.16 или выше.
 
 Сборка проекта
 
-bash
-
-make build
+  make build
 
 Установка исполняемого файла
 
-bash
-
-sudo make install
+  sudo make install
 
 Это установит исполняемый файл go-stress в /usr/local/bin.
 Использование
 
-bash
-
-go-stress [опции]
+  go-stress [опции]
 
 Опции командной строки
 Опция	Описание	По умолчанию
@@ -51,30 +46,23 @@ go-stress [опции]
 -proxy-file	Путь к файлу, содержащему список прокси-серверов	""
 -ws	Использовать WebSocket вместо HTTP	false
 -help	Вывести информацию о командах и опциях (на русском языке)	
+
 Примеры использования
 Базовый HTTP тест
 
-bash
-
-go-stress -host=example.com -path=/api/test -conn=100 -conn-delay=50
+  go-stress -host=example.com -path=/api/test -conn=100 -conn-delay=50
 
 WebSocket тест с SSL
 
-bash
-
-go-stress -host=example.com -path=/ws -conn=50 -ssl=true -ws=true
+  go-stress -host=example.com -path=/ws -conn=50 -ssl=true -ws=true
 
 Использование прокси-серверов
 
-bash
-
-go-stress -host=example.com -path=/api/test -conn=100 -proxy-file=proxies.txt
+  go-stress -host=example.com -path=/api/test -conn=100 -proxy-file=proxies.txt
 
 Отправка пользовательских заголовков и тела запроса
 
-bash
-
-go-stress -host=example.com -path=/api/test -conn=50 -header="{"Content-Type":"application/json", "Authorization":"Bearer token"}"
+  go-stress -host=example.com -path=/api/test -conn=50 -header="{"Content-Type":"application/json", "Authorization":"Bearer token"}"
 
 Мониторинг статуса
 
