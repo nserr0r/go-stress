@@ -1,94 +1,95 @@
 Go-Stress
 
-Go-Stress is a powerful and flexible tool for stress-testing web applications, capable of generating concurrent HTTP and WebSocket connections. It supports the use of proxies, custom request headers, and bodies, making it ideal for a wide range of load testing scenarios.
-Features
+Go-Stress — это мощный и гибкий инструмент для стресс-тестирования веб-приложений, созданный для проверки отказоустойчивости моих приложений. Этот инструмент позволяет генерировать параллельные HTTP и WebSocket соединения, поддерживает использование прокси-серверов, а также задавать пользовательские заголовки и содержимое запроса.
 
-    HTTP and WebSocket Support: Test your HTTP and WebSocket endpoints with a single tool.
-    Custom Headers and Body: Send custom headers and body content for both HTTP and WebSocket connections.
-    Proxy Support: Route your requests through a list of proxies, with support for both HTTP and SOCKS5 proxies.
-    SSL/TLS: Supports secure connections via SSL/TLS with an optional --insecure flag to skip certificate verification.
-    Connection Management: Control the number of concurrent connections, delay between connections, and the lifetime of each connection.
-    Real-Time Status: Monitor active and completed connections in real time, with color-coded output.
+Важно: Использование этого инструмента в целях, нарушающих закон, категорически не рекомендуется.
+Основные возможности
 
-Installation
-Prerequisites
+    Поддержка HTTP и WebSocket: Тестируйте свои HTTP и WebSocket эндпоинты с помощью одного инструмента.
+    Пользовательские заголовки и содержимое запроса: Отправляйте пользовательские заголовки и тело запроса как для HTTP, так и для WebSocket соединений.
+    Поддержка прокси-серверов: Направляйте ваши запросы через список прокси-серверов, включая поддержку HTTP и SOCKS5 прокси.
+    SSL/TLS: Поддержка безопасных соединений через SSL/TLS с опциональным флагом --insecure для пропуска проверки сертификатов.
+    Управление соединениями: Контролируйте количество одновременных соединений, задержку между подключениями и время жизни каждого соединения.
+    Реальное время: Отслеживайте активные и завершенные соединения в реальном времени с цветовой индикацией в консоли.
 
-    Go 1.16+ installed on your system.
+Установка
+Предварительные требования
 
-Building the Project
+    Установленный Go 1.16 или выше.
+
+Сборка проекта
 
 bash
 
 make build
 
-Installing the Binary
+Установка исполняемого файла
 
 bash
 
 sudo make install
 
-This will install the go-stress binary to /usr/local/bin.
-Usage
+Это установит исполняемый файл go-stress в /usr/local/bin.
+Использование
 
 bash
 
-go-stress [options]
+go-stress [опции]
 
-Command-Line Options
-Option	Description	Default
--host	Server host (e.g., localhost:3001)	localhost:3001
--path	Server path (e.g., /api/test)	/crypt/ws
--conn	Number of concurrent connections	10
--conn-delay	Delay between establishing new connections (in milliseconds)	100
--conn-lifetime	Lifetime of each connection before reconnecting (in milliseconds)	60000
--log	Enable logging to console	false
--ssl	Use SSL for secure connections	false
--insecure	Skip SSL certificate verification	false
--body	Custom body content to send with HTTP POST or WebSocket messages	""
--header	Custom headers in JSON format (e.g., {'Authorization':'Bearer token', 'Content-Type':'application/json'})	""
--proxy-file	Path to a file containing a list of proxy servers	""
--ws	Use WebSocket instead of HTTP	false
-Examples
-Basic HTTP Test
+Опции командной строки
+Опция	Описание	По умолчанию
+-host	Хост сервера (например, localhost:3001)	localhost:3001
+-path	Путь на сервере (например, /api/test)	/crypt/ws
+-conn	Количество одновременных соединений	10
+-conn-delay	Задержка между установкой новых соединений (в миллисекундах)	100
+-conn-lifetime	Время жизни каждого соединения перед переподключением (в миллисекундах)	60000
+-log	Включить логирование в консоль	false
+-ssl	Использовать SSL для безопасных соединений	false
+-insecure	Пропустить проверку SSL сертификата	false
+-body	Пользовательское содержимое запроса для отправки в HTTP POST или WebSocket сообщениях	""
+-header	Пользовательские заголовки в формате JSON (например, {'Authorization':'Bearer token'})	""
+-proxy-file	Путь к файлу, содержащему список прокси-серверов	""
+-ws	Использовать WebSocket вместо HTTP	false
+-help	Вывести информацию о командах и опциях (на русском языке)	
+Примеры использования
+Базовый HTTP тест
 
 bash
 
 go-stress -host=example.com -path=/api/test -conn=100 -conn-delay=50
 
-WebSocket Test with SSL
+WebSocket тест с SSL
 
 bash
 
 go-stress -host=example.com -path=/ws -conn=50 -ssl=true -ws=true
 
-Using Proxies
+Использование прокси-серверов
 
 bash
 
 go-stress -host=example.com -path=/api/test -conn=100 -proxy-file=proxies.txt
 
-Sending Custom Headers and Body
+Отправка пользовательских заголовков и тела запроса
 
 bash
 
-go-stress -host=example.com -path=/api/test -conn=50 -header="{\"Content-Type\":\"application/json\", \"Authorization\":\"Bearer token\"}" -body="{'key':'value'}"
+go-stress -host=example.com -path=/api/test -conn=50 -header="{'Authorization':'Bearer token'}" -body="{'key':'value'}"
 
-Status Monitoring
+Мониторинг статуса
 
-The status of active and completed connections will be displayed in real-time in the console, with color-coded output:
+Статус активных и завершенных соединений будет отображаться в реальном времени в консоли с цветовой индикацией:
 
-    Red: Active connections
-    Green: Completed connections
-    Light Green: Working proxies (if enabled)
-    Yellow: Pending connections or proxies
+    Красный: Активные соединения
+    Зеленый: Завершенные соединения
+    Светло-зеленый: Рабочие прокси (если включены)
+    Желтый: Ожидающие соединения или прокси
 
-Contributing
+Лицензия
 
-Contributions are welcome! Please submit issues and pull requests to the GitHub repository.
+Этот проект лицензирован под GNU General Public License v3.0 (GPL-3.0). Вы можете свободно распространять и модифицировать этот проект в соответствии с условиями лицензии GPL-3.0.
 
-License
+Для получения более подробной информации смотрите файл LICENSE или посетите сайт GNU.
+Контакт
 
-This project is licensed under the GNU General Public License v3.0 (GPL-3.0). You may freely distribute and modify this project under the terms of the GPL-3.0 license.
-
-For more details, see the LICENSE file or visit the GNU website.
-
+Создатель: Nserr0r (nserr0r@gmail.com)
