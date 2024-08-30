@@ -1,6 +1,6 @@
 BINARY_NAME := go-stress
 SRC := $(wildcard *.go)
-INSTALL_DIR := /usr/local/bin
+INSTALL_DIR := /usr/bin/
 
 LDFLAGS :=
 

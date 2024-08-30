@@ -26,7 +26,8 @@ Go-Stress — это мощный и гибкий инструмент для с
 
     sudo make install
 
-Это установит исполняемый файл go-stress в /usr/local/bin.
+Это установит исполняемый файл go-stress в /usr/bin/.
+
 Использование
 
     go-stress [опции]
