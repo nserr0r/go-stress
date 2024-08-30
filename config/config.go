@@ -3,7 +3,7 @@ package config
 import (
 	"encoding/json"
 	"flag"
-	"log"
+	"fmt"
 )
 
 type Config struct {
@@ -27,22 +27,22 @@ func LoadConfig() *Config {
 
 	flag.StringVar(&config.Host, "host", "localhost:3001", "Server host (Хост сервера, например, localhost:3001)")
 	flag.StringVar(&config.Path, "path", "/crypt/ws", "Server path (Путь на сервере, например, /api/test)")
-	flag.IntVar(&config.Connections, "conn", 100, "Number of concurrent connections (Количество одновременных соединений)")
-	flag.IntVar(&config.ConnDelayMs, "conn-delay", 10, "Delay between connections in milliseconds (Задержка между соединениями в миллисекундах)")
-	flag.IntVar(&config.ConnLifetimeMs, "conn-lifetime", 1000, "Lifetime of each connection in milliseconds (Время жизни каждого соединения в миллисекундах)")
+	flag.IntVar(&config.Connections, "conn", 10, "Number of concurrent connections (Количество одновременных соединений)")
+	flag.IntVar(&config.ConnDelayMs, "conn-delay", 100, "Delay between connections in milliseconds (Задержка между соединениями в миллисекундах)")
+	flag.IntVar(&config.ConnLifetimeMs, "conn-lifetime", 60000, "Lifetime of each connection in milliseconds (Время жизни каждого соединения в миллисекундах)")
 	flag.BoolVar(&config.Log, "log", false, "Enable logging to console (Включить логирование в консоль)")
-	flag.BoolVar(&config.InsecureSkipVerify, "insecure", true, "Skip SSL certificate verification (Пропустить проверку SSL сертификата)")
+	flag.BoolVar(&config.InsecureSkipVerify, "insecure", false, "Skip SSL certificate verification (Пропустить проверку SSL сертификата)")
 	flag.BoolVar(&config.UseSSL, "ssl", false, "Use SSL for secure connections (Использовать SSL для безопасных соединений)")
 	flag.StringVar(&config.Body, "body", "", "Custom body to send with HTTP POST or WebSocket message (Пользовательское тело запроса для отправки в HTTP POST или WebSocket)")
-	flag.StringVar(&headers, "header", "", "Custom headers in JSON format (Пользовательские заголовки в формате JSON)")
+	flag.StringVar(&headers, "header", "", "Custom headers in JSON format (Пользовательские заголовки в формате JSON, возможно потребуется экранировать кавычки и другие специальные символы)")
 	flag.StringVar(&config.ProxyFile, "proxy-file", "", "Path to file containing list of proxy servers (Путь к файлу со списком прокси-серверов)")
 	flag.BoolVar(&config.UseWebSocket, "ws", false, "Use WebSocket instead of HTTP (Использовать WebSocket вместо HTTP)")
 
 	flag.Usage = func() {
-		log.Println("Использование: go-stress [опции]")
+		fmt.Println("Использование: go-stress [опции]")
 		flag.PrintDefaults()
-		log.Println("Контакты: Nserr0r (nserr0r@gmail.com)")
-		log.Println("Описание: Инструмент для стресс-тестирования веб-приложений. Не используйте во вредоносных целях.")
+		fmt.Println("Контакты: Nserr0r (nserr0r@gmail.com)")
+		fmt.Println("Описание: Инструмент для стресс-тестирования веб-приложений. Не используйте во вредоносных целях.")
 	}
 
 	flag.Parse()
@@ -50,9 +50,10 @@ func LoadConfig() *Config {
 	// Парсинг строки заголовков в карту
 	if headers != "" {
 		if err := json.Unmarshal([]byte(headers), &config.Headers); err != nil {
-			log.Fatalf("Не удалось распарсить заголовки: %v", err)
+			fmt.Printf("Не удалось распарсить заголовки: %v\n", err)
 		}
 	}
 
 	return config
 }
+
