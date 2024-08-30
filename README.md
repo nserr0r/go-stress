@@ -20,58 +20,59 @@ Go-Stress — это мощный и гибкий инструмент для с
 
 Сборка проекта
 
-  make build
+    make build
 
 Установка исполняемого файла
 
-  sudo make install
+    sudo make install
 
 Это установит исполняемый файл go-stress в /usr/local/bin.
 Использование
 
-  go-stress [опции]
+    go-stress [опции]
 
 Опции командной строки
 Опция	Описание	По умолчанию
--host	Хост сервера (например, localhost:3001)	localhost:3001
--path	Путь на сервере (например, /api/test)	/crypt/ws
--conn	Количество одновременных соединений	10
--conn-delay	Задержка между установкой новых соединений (в миллисекундах)	100
--conn-lifetime	Время жизни каждого соединения перед переподключением (в миллисекундах)	60000
--log	Включить логирование в консоль	false
--ssl	Использовать SSL для безопасных соединений	false
--insecure	Пропустить проверку SSL сертификата	false
--body	Пользовательское содержимое запроса для отправки в HTTP POST или WebSocket сообщениях	""
--header	Пользовательские заголовки в формате JSON (например, {'Authorization':'Bearer token'})	""
--proxy-file	Путь к файлу, содержащему список прокси-серверов	""
--ws	Использовать WebSocket вместо HTTP	false
--help	Вывести информацию о командах и опциях (на русском языке)	
+    -host	Хост сервера (например, localhost:3001)	localhost:3001
+    -path	Путь на сервере (например, /api/test)	/crypt/ws
+    -conn	Количество одновременных соединений	10
+    -conn-delay	Задержка между установкой новых соединений (в миллисекундах)	100
+    -conn-lifetime	Время жизни каждого соединения перед переподключением (в миллисекундах)	60000
+    -log	Включить логирование в консоль	false
+    -ssl	Использовать SSL для безопасных соединений	false
+    -insecure	Пропустить проверку SSL сертификата	false
+    -body	Пользовательское содержимое запроса для отправки в HTTP POST или WebSocket сообщениях	""
+    -header	Пользовательские заголовки в формате JSON (например, {'Authorization':'Bearer token'})	""
+    -proxy-file	Путь к файлу, содержащему список прокси-серверов	""
+    -ws	Использовать WebSocket вместо HTTP	false
+    -help	Вывести информацию о командах и опциях (на русском языке)	
 
 Примеры использования
+
 Базовый HTTP тест
 
-  go-stress -host=example.com -path=/api/test -conn=100 -conn-delay=50
+    go-stress -host=example.com -path=/api/test -conn=100 -conn-delay=50
 
 WebSocket тест с SSL
 
-  go-stress -host=example.com -path=/ws -conn=50 -ssl=true -ws=true
+    go-stress -host=example.com -path=/ws -conn=50 -ssl=true -ws=true
 
 Использование прокси-серверов
 
-  go-stress -host=example.com -path=/api/test -conn=100 -proxy-file=proxies.txt
+    go-stress -host=example.com -path=/api/test -conn=100 -proxy-file=proxies.txt
 
 Отправка пользовательских заголовков и тела запроса
 
-  go-stress -host=example.com -path=/api/test -conn=50 -header="{"Content-Type":"application/json", "Authorization":"Bearer token"}"
+    go-stress -host=example.com -path=/api/test -conn=50 -header="{"Content-Type":"application/json", "Authorization":"Bearer token"}"
 
 Мониторинг статуса
 
 Статус активных и завершенных соединений будет отображаться в реальном времени в консоли с цветовой индикацией:
 
-    Красный: Активные соединения
-    Зеленый: Завершенные соединения
-    Светло-зеленый: Рабочие прокси (если включены)
-    Желтый: Ожидающие соединения или прокси
+  Красный: Активные соединения
+  Зеленый: Завершенные соединения
+  Светло-зеленый: Рабочие прокси (если включены)
+  Желтый: Ожидающие соединения или прокси
 
 Лицензия
 
