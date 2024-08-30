@@ -9,19 +9,17 @@ GREEN := $(shell tput setaf 2)
 RESET := $(shell tput sgr0)
 
 .PHONY: all
-all: tidy build
+all: init tidy build
 
 .PHONY: init
 init:
 	@echo "$(YELLOW)Initializing Go module...$(RESET)"
-	@go mod init main || true
-	@go mod tidy
+	@[ -f "go.mod" ] || go mod init main
 	@echo "$(GREEN)Go module initialized and dependencies tidied!$(RESET)"
 
 .PHONY: tidy
 tidy:
 	@echo "$(YELLOW)Tidying dependencies...$(RESET)"
-	@go mod init main || true
 	@go mod tidy
 	@echo "$(GREEN)Dependencies tidied!$(RESET)"
 
