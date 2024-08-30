@@ -74,7 +74,7 @@ go-stress -host=example.com -path=/api/test -conn=100 -proxy-file=proxies.txt
 
 bash
 
-go-stress -host=example.com -path=/api/test -conn=50 -header="{\"Content-Type\":\"application/json\", \"Authorization\":\"Bearer token\"}"
+go-stress -host=example.com -path=/api/test -conn=50 -header="{"Content-Type":"application/json", "Authorization":"Bearer token"}"
 
 Мониторинг статуса
 
