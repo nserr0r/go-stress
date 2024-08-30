@@ -4,14 +4,13 @@ import (
 	"bytes"
 	"fmt"
 	"io/ioutil"
+	"main/config"
+	"main/logger"
+	"main/proxy"
 	"net/http"
 	"net/url"
 	"sync/atomic"
 	"time"
-
-	"main/config"
-	"main/logger"
-	"main/proxy"
 
 	"github.com/gorilla/websocket"
 )
