@@ -21,6 +21,7 @@ init:
 .PHONY: tidy
 tidy:
 	@echo "$(YELLOW)Tidying dependencies...$(RESET)"
+	@go mod init || true
 	@go mod tidy
 	@echo "$(GREEN)Dependencies tidied!$(RESET)"
 
